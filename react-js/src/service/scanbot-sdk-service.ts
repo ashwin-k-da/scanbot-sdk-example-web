@@ -20,7 +20,7 @@ import {
 } from "scanbot-web-sdk/@types";
 
 import Pages from "../model/pages";
-import {ImageUtils} from "../utils/image-utils";
+import { ImageUtils } from "../utils/image-utils";
 import { BarcodeFormat } from "scanbot-web-sdk/@types/model/barcode/barcode-format";
 
 
@@ -32,7 +32,22 @@ export class ScanbotSdkService {
 
     public static instance = new ScanbotSdkService();
 
-    license = "";
+    license =
+        "e3k9YHlX9mXAXjeLeZoXRmxt/sNa7l" +
+        "cwWWgw8PdJ7P0q7id7kuwH/sfMkfxS" +
+        "yScnz/Lsy58v8sOoMk2fzFW3A+gZzK" +
+        "lh76mLUo0Wi5ylkTmVWE4t+903Ayex" +
+        "GQRlkHRVTLa3yAXs7dz1zuQmnNkKx5" +
+        "llZKOucD40ks6TN1uEKalN8YMp1/OX" +
+        "hFjAOcIlx5rRJWiBrSrxnwbCuh6nnJ" +
+        "4OwQ3jF4YX0RFXpcC0tfluWJcEGubp" +
+        "m4ZCjnG1/+E1ue12dbGImTrBftVA8u" +
+        "ObL46HZhSz7qWxRgxT2kAAFb0KHi3z" +
+        "Z6rPJdEi5tsovGudqD9ZODwGlsiSk4" +
+        "6zTWQ2uSs7yQ==\nU2NhbmJvdFNESw" +
+        "psb2NhbGhvc3R8YXdlc29tZS1zd2ly" +
+        "bGVzLThjNTFhNy5uZXRsaWZ5LmFwcA" +
+        "oxNjMzNzM3NTk5CjgzODg2MDcKOA==\n";
 
     sdk?: ScanbotSDK;
 
@@ -41,7 +56,7 @@ export class ScanbotSdkService {
     croppingView?: ICroppingViewHandle;
 
     public async initialize() {
-        this.sdk = await ScanbotSDK.initialize({licenseKey: this.license, engine: "/"});
+        this.sdk = await ScanbotSDK.initialize({ licenseKey: this.license, engine: "/" });
         return this.sdk;
     }
 
@@ -57,7 +72,7 @@ export class ScanbotSdkService {
         } else {
             setTimeout(() => {
                 this.setLicenceTimeout(callback);
-            },2000);
+            }, 2000);
         }
 
     }
@@ -75,14 +90,14 @@ export class ScanbotSdkService {
             containerId: ScanbotSdkService.DOCUMENT_SCANNER_CONTAINER,
             text: {
                 hint: {
-                    OK : "Capturing your document...",
-                    OK_SmallSize : "The document is too small. Try moving closer.",
-                    OK_BadAngles : "This is a bad camera angle. Hold the device straight over the document.",
-                    OK_BadAspectRatio : "Rotate the device sideways, so that the document fits better into the screen.",
-                    OK_OffCenter : "Try holding the device at the center of the document.",
-                    Error_NothingDetected : "Please hold the device over a document to start scanning.",
-                    Error_Brightness : "It is too dark. Try turning on a light.",
-                    Error_Noise : "Please move the document to a clear surface.",
+                    OK: "Capturing your document...",
+                    OK_SmallSize: "The document is too small. Try moving closer.",
+                    OK_BadAngles: "This is a bad camera angle. Hold the device straight over the document.",
+                    OK_BadAspectRatio: "Rotate the device sideways, so that the document fits better into the screen.",
+                    OK_OffCenter: "Try holding the device at the center of the document.",
+                    Error_NothingDetected: "Please hold the device over a document to start scanning.",
+                    Error_Brightness: "It is too dark. Try turning on a light.",
+                    Error_Noise: "Please move the document to a clear surface.",
                 }
             },
         };
@@ -98,23 +113,23 @@ export class ScanbotSdkService {
 
     public async createBarcodeScanner(callback: any) {
         const barcodeFormats: BarcodeFormat[] = [
-            "AZTEC", 
-            "CODABAR", 
-            "CODE_39", 
-            "CODE_93", 
-            "CODE_128", 
-            "DATA_MATRIX", 
-            "EAN_8", 
-            "EAN_13", 
-            "ITF", 
-            "MAXICODE", 
-            "PDF_417", 
-            "QR_CODE", 
-            "RSS_14", 
-            "RSS_EXPANDED", 
-            "UPC_A", 
-            "UPC_E", 
-            "UPC_EAN_EXTENSION", 
+            "AZTEC",
+            "CODABAR",
+            "CODE_39",
+            "CODE_93",
+            "CODE_128",
+            "DATA_MATRIX",
+            "EAN_8",
+            "EAN_13",
+            "ITF",
+            "MAXICODE",
+            "PDF_417",
+            "QR_CODE",
+            "RSS_14",
+            "RSS_EXPANDED",
+            "UPC_A",
+            "UPC_E",
+            "UPC_EAN_EXTENSION",
             "MSI_PLESSEY"
         ];
 
@@ -197,7 +212,7 @@ export class ScanbotSdkService {
 
     async generatePDF(pages: any[]) {
         // When scaling down an image, also lower the dots-per-inch parameter. Else it won't fill the page
-        const options: PdfGenerationOptions = {standardPaperSize: "A4", landscape: true, dpi: 1};
+        const options: PdfGenerationOptions = { standardPaperSize: "A4", landscape: true, dpi: 1 };
         const generator: PdfGenerator = await this.sdk!.beginPdf(options);
         for (const page of pages) {
             let image = page.filtered ?? page.cropped ?? page.original;
@@ -208,7 +223,7 @@ export class ScanbotSdkService {
     }
 
     async generateTIFF(pages: any[]) {
-        const options: TiffGenerationOptions = {binarizationFilter: "deepBinarization", dpi: 123};
+        const options: TiffGenerationOptions = { binarizationFilter: "deepBinarization", dpi: 123 };
         const generator: TiffGenerator = await this.sdk!.beginTiff(options);
         for (const page of pages) {
             await generator.addPage(page.cropped ?? page.original);
