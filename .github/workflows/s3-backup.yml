@@ -1,0 +1,19 @@
+name: Backup repo to S3
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  s3Backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: S3 Backup
+        uses: peter-evans/s3-backup@v1
+        env:
+          ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}        
+          MIRROR_TARGET: da-github-backup/scanbot-sdk-example-web
+        with:
+          args: --overwrite --remove
